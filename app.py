@@ -58,14 +58,17 @@ def main():
     elif option == "上傳 CSV 檔":
         uploaded_file = st.file_uploader("請上傳包含 name 和 score 欄位的檔案 (CSV 或 XLSX)", type=["csv", "xlsx"])
         if uploaded_file:
-            if uploaded_file.name.endswith('.csv'):
-            df = pd.read_csv(uploaded_file)
-        elif uploaded_file.name.endswith('.xlsx'):
+            if uploaded_file.name.endswith(".csv"):
+                df = pd.read_csv(uploaded_file)
+        elif uploaded_file.name.endswith(".xlsx"):
             df = pd.read_excel(uploaded_file)
-            if 'name' in df.columns and 'score' in df.columns:
-                run_analysis(df)
-            else:
-                st.error("請確保 CSV 檔內包含 'name' 和 'score' 欄位。")
+        else:
+            st.error("不支援的檔案格式")
+
+        if 'name' in df.columns and 'score' in df.columns:
+            run_analysis(df)
+        else:
+            st.error("請確保檔案中包含 'name' 和 'score' 欄位。")
 
     elif option == "手動輸入資料":
         st.info("請逐筆輸入學生資料後按下新增，再按分析。")
